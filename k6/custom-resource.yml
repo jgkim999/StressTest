@@ -1,0 +1,27 @@
+apiVersion: k6.io/v1alpha1
+kind: K6
+metadata:
+  name: k6-sample
+spec:
+  parallelism: 4
+  script:
+    configMap:
+      name: crocodile-stress-test
+      file: test.js
+  arguments: --out influxdb=http://influxdb/myk6db
+---
+apiVersion: "v1"
+kind: "Endpoints"
+metadata:
+  name: "influxdb"  
+subsets:
+  -
+    addresses:
+      -
+        ip: "10.30.171.31"
+    ports:
+      -
+        port: 8086
+        name: "influxdb"
+        
+
